@@ -1,36 +1,46 @@
-#include "CentralWidget.h"
-#include "SquareBoard.h"
-#include <QResizeEvent>
-#include <QDebug>
+#include "centralwidget.h"
+#include "squareboard.h"
+
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QPushButton>
 
 CentralWidget::CentralWidget(QWidget* parent)
     : QWidget(parent)
 {
-    m_board = new SquareBoard(this);
+    const int sizeButton = 75;
 
-    const int minButtonSize = 160;
-    const int minBoardSize  = minButtonSize * 2;
+    auto* mainLayout = new QHBoxLayout(this);
+    mainLayout->setContentsMargins(8, 8, 8, 8);
+    mainLayout->setSpacing(8);
 
-    // CỰC KỲ QUAN TRỌNG
-    setMinimumSize(minBoardSize, minBoardSize);
-}
+    // ===== Left: Board =====
+    auto* board = new SquareBoard(this);
+    board->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    // ===== Right: Side panel =====
+    auto* sidePanel = new QWidget(this);
+    sidePanel->setFixedWidth(200);
 
-void CentralWidget::resizeEvent(QResizeEvent* event)
-{
-    QWidget::resizeEvent(event);
+    auto* sideLayout = new QVBoxLayout(sidePanel);
+    sideLayout->setContentsMargins(0, 0, 0, 0);
+    sideLayout->setSpacing(8);
 
-    int side = qMin(width(), height());
-    qDebug() << "side qmin : " << side;
-    int minBoardSize = 160 * 2;
+    // 🔴 QUAN TRỌNG: đẩy khoảng trống lên TRÊN
+    sideLayout->addStretch();
 
-    side = qMax(side, minBoardSize);
-    qDebug() << "side qMax : " << side;
+    QPushButton* b1 = new QPushButton("Button 1", sidePanel);
+    QPushButton* b2 = new QPushButton("Button 2", sidePanel);
+    QPushButton* b3 = new QPushButton("Button 3", sidePanel);
 
-    int x = (width()  - side) / 2;
-    int y = (height() - side) / 2;
+    for (auto* b : {b1, b2, b3})
+    {
+        b->setMinimumSize(sizeButton, sizeButton);
+        b->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sideLayout->addWidget(b);
+    }
 
-    qDebug() << "x : " << x << "-" << "y : " << y;
-
-    m_board->setGeometry(x, y, side, side);
+    // ===== Assemble =====
+    mainLayout->addWidget(board, 1);
+    mainLayout->addWidget(sidePanel);
 }

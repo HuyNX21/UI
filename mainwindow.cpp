@@ -1,9 +1,9 @@
-#include "MainWindow.h"
-#include "CentralWidget.h"
+#include "mainwindow.h"
+#include "centralwidget.h"
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
-    setCentralWidget(new CentralWidget(this));
-    resize(600, 400);
+    m_centralWidget = new CentralWidget(this);
+    setCentralWidget(m_centralWidget);
 }

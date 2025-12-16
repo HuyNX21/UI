@@ -1,0 +1,16 @@
+QMainWindow
+ └── CentralWidget (QWidget)
+     └── QHBoxLayout  ← CHIA NGANG
+         ├── BoardContainer (QWidget)  ← CHA TRỰC TIẾP CỦA BOARD
+         │    └── SquareBoard (QWidget)
+         │         └── QGridLayout
+         │              ├── QPushButton
+         │              ├── QPushButton
+         │              ├── QPushButton
+         │              └── QPushButton
+         └── SidePanel (QWidget)
+              └── QVBoxLayout
+                   ├── QPushButton
+                   ├── QPushButton
+                   ├── QPushButton
+                   └── stretch

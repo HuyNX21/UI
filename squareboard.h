@@ -1,5 +1,4 @@
-#ifndef SQUAREBOARD_H
-#define SQUAREBOARD_H
+#pragma once
 
 #include <QWidget>
 
@@ -8,6 +7,10 @@ class SquareBoard : public QWidget
     Q_OBJECT
 public:
     explicit SquareBoard(QWidget* parent = nullptr);
-};
 
-#endif
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+
+private:
+    static constexpr int MinButtonSize = 160;
+};

@@ -39,6 +39,9 @@ else()
             ${PROJECT_SOURCES}
             squareboard.h squareboard.cpp
             centralwidget.h centralwidget.cpp
+            Doc.txt
+
+
         )
     endif()
 endif()
