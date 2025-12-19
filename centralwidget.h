@@ -2,8 +2,6 @@
 
 #include <QWidget>
 
-class BoardContainer;
-
 class CentralWidget : public QWidget
 {
     Q_OBJECT
