@@ -28,7 +28,7 @@ void SquareBoard::setBoardSize(int size)
     const int minSide = MinButtonSize * m_boardSize;
     setMinimumSize(minSide, minSide);
 
-    updateGeometry(); // ⭐ BẮT BUỘC
+    updateGeometry();
 }
 
 void SquareBoard::rebuildBoard()
@@ -44,8 +44,10 @@ void SquareBoard::rebuildBoard()
         for (int c = 0; c < m_boardSize; ++c)
         {
             auto* btn = new QPushButton(this);
-            btn->setSizePolicy(QSizePolicy::Expanding,
-                               QSizePolicy::Expanding);
+
+            btn->setSizePolicy(QSizePolicy::Ignored,
+                               QSizePolicy::Ignored);
+
             m_grid->addWidget(btn, r, c);
         }
     }
