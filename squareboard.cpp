@@ -1,4 +1,7 @@
 #include "SquareBoard.h"
+
+#include <QGridLayout>
+#include <QPushButton>
 #include <QResizeEvent>
 #include <QtMath>
 
@@ -11,7 +14,7 @@ SquareBoard::SquareBoard(QWidget* parent)
     m_grid->setSpacing(0);
     m_grid->setContentsMargins(0, 0, 0, 0);
 
-    setBoardSize(8); // mode mặc định
+    setBoardSize(8);
 }
 
 void SquareBoard::setBoardSize(int size)
@@ -22,15 +25,14 @@ void SquareBoard::setBoardSize(int size)
     m_boardSize = size;
     rebuildBoard();
 
-    const int minBoardSize = MinButtonSize * m_boardSize;
-    setMinimumSize(minBoardSize, minBoardSize);
+    const int minSide = MinButtonSize * m_boardSize;
+    setMinimumSize(minSide, minSide);
 
-    updateGeometry();
+    updateGeometry(); // ⭐ BẮT BUỘC
 }
 
 void SquareBoard::rebuildBoard()
 {
-    // Clear old widgets
     while (QLayoutItem* item = m_grid->takeAt(0))
     {
         delete item->widget();
@@ -42,19 +44,39 @@ void SquareBoard::rebuildBoard()
         for (int c = 0; c < m_boardSize; ++c)
         {
             auto* btn = new QPushButton(this);
-            btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-            btn->setText(QString("%1,%2").arg(r).arg(c));
+            btn->setSizePolicy(QSizePolicy::Expanding,
+                               QSizePolicy::Expanding);
             m_grid->addWidget(btn, r, c);
         }
     }
 }
 
+// ===== Qt layout contract =====
+
+bool SquareBoard::hasHeightForWidth() const
+{
+    return true;
+}
+
+int SquareBoard::heightForWidth(int w) const
+{
+    const int minSide = MinButtonSize * m_boardSize;
+    return qMax(w, minSide);
+}
+
+QSize SquareBoard::sizeHint() const
+{
+    const int side = MinButtonSize * m_boardSize;
+    return QSize(side, side);
+}
+
+QSize SquareBoard::minimumSizeHint() const
+{
+    const int side = MinButtonSize * m_boardSize;
+    return QSize(side, side);
+}
+
 void SquareBoard::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
-
-    int side = qMin(width(), height());
-    side = qMax(side, MinButtonSize * m_boardSize);
-
-    resize(side, side);
 }

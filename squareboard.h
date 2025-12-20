@@ -1,9 +1,8 @@
 #pragma once
 
 #include <QWidget>
-#include <QGridLayout>
-#include <QPushButton>
-#include <vector>
+
+class QGridLayout;
 
 class SquareBoard : public QWidget
 {
@@ -12,7 +11,13 @@ class SquareBoard : public QWidget
 public:
     explicit SquareBoard(QWidget* parent = nullptr);
 
-    void setBoardSize(int size); // 8, 16, 32
+    void setBoardSize(int size);
+
+    bool hasHeightForWidth() const override;
+    int  heightForWidth(int w) const override;
+
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
@@ -22,5 +27,5 @@ private:
 
 private:
     QGridLayout* m_grid = nullptr;
-    int m_boardSize = 2; // default 2x2 (hoặc bạn có thể set 8)
+    int m_boardSize = 0;
 };
