@@ -28,28 +28,26 @@ CentralWidget::CentralWidget(QWidget* parent)
 
     sideLayout->addStretch();
 
-    QPushButton* b8  = new QPushButton("8 x 8", sidePanel);
-    QPushButton* b16 = new QPushButton("16 x 16", sidePanel);
-    QPushButton* b32 = new QPushButton("32 x 32", sidePanel);
+    QPushButton* b1  = new QPushButton("x", sidePanel);
+    QPushButton* back = new QPushButton("Back", sidePanel);
+    QPushButton* b3 = new QPushButton("x", sidePanel);
 
-    for (auto* b : {b8, b16, b32})
+    for (auto* b : {b1, back, b3})
     {
         b->setMinimumSize(sizeButton, sizeButton);
         b->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sideLayout->addWidget(b);
     }
 
-    connect(b8,  &QPushButton::clicked, this, [this]() {
-        m_board->setBoardSize(8);
-    });
-    connect(b16, &QPushButton::clicked, this, [this]() {
-        m_board->setBoardSize(16);
-    });
-    connect(b32, &QPushButton::clicked, this, [this]() {
-        m_board->setBoardSize(32);
-    });
+    connect(back, &QPushButton::clicked,
+            this, &CentralWidget::backRequested);
 
     // ===== Assemble =====
     mainLayout->addWidget(m_board, 1);
     mainLayout->addWidget(sidePanel);
+}
+
+void CentralWidget::setBoardSize(int size)
+{
+    m_board->setBoardSize(size);
 }

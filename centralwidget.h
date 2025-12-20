@@ -10,7 +10,11 @@ class CentralWidget : public QWidget
 
 public:
     explicit CentralWidget(QWidget* parent = nullptr);
+    void setBoardSize(int size);
 
 private:
     SquareBoard* m_board = nullptr;
+
+signals:
+    void backRequested();
 };
