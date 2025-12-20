@@ -6,27 +6,31 @@
 SelectModeWidget::SelectModeWidget(QWidget* parent)
     : QWidget(parent)
 {
-    auto* layout = new QVBoxLayout(this);
-    layout->setSpacing(10);
-    layout->setContentsMargins(10, 10, 10, 10);
+    QGridLayout* grid = new QGridLayout(this);
+    grid->setSpacing(5);
+    grid->setContentsMargins(0, 0, 0, 0);
 
-    QPushButton* b8  = new QPushButton("8 x 8",  this);
-    QPushButton* b16 = new QPushButton("16 x 16", this);
-    QPushButton* b32 = new QPushButton("32 x 32", this);
-    QPushButton* bQ  = new QPushButton("?",       this);
+    QPushButton* btn1 = new QPushButton(tr("8x8"), this);
+    QPushButton* btn2 = new QPushButton(tr("16x16"), this);
+    QPushButton* btn3 = new QPushButton(tr("30x16"), this);
+    QPushButton* btn4 = new QPushButton(tr("?"), this);
 
-    for (auto* b : {b8, b16, b32, bQ})
-    {
-        b->setMinimumHeight(50);
-        b->setMinimumWidth(20);
-        layout->addWidget(b);
-    }
+    btn1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    btn2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    btn3->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    btn4->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    layout->addStretch();
+    grid->addWidget(btn1, 0, 0);
+    grid->addWidget(btn2, 0, 1);
+    grid->addWidget(btn3, 1, 0);
+    grid->addWidget(btn4, 1, 1);
 
-    connect(b8,  &QPushButton::clicked, this, [this]() { emit modeSelected(8);  });
-    connect(b16, &QPushButton::clicked, this, [this]() { emit modeSelected(16); });
-    connect(b32, &QPushButton::clicked, this, [this]() { emit modeSelected(32); });
+    grid->setRowStretch(0, 1);
+    grid->setRowStretch(1, 1);
+    grid->setColumnStretch(0, 1);
+    grid->setColumnStretch(1, 1);
 
-    // button "?" chưa implement → không connect
+    connect(btn1,  &QPushButton::clicked, this, [this]() { emit modeSelected(8);  });
+    connect(btn2,  &QPushButton::clicked, this, [this]() { emit modeSelected(16); });
+    connect(btn3,  &QPushButton::clicked, this, [this]() { emit modeSelected(32); });
 }

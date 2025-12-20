@@ -11,6 +11,9 @@ class MainSellectMode : public QWidget
 public:
     explicit MainSellectMode(QWidget* parent = nullptr);
 
+signals:
+    void modeSelected(int size);   // ⭐ NEW
+
 protected:
     void resizeEvent(QResizeEvent* event) override;
 

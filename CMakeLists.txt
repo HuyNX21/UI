@@ -40,8 +40,10 @@ else()
             squareboard.h squareboard.cpp
             centralwidget.h centralwidget.cpp
             Doc.txt
-            selectmodewidget.h selectmodewidget.cpp
-            boardwidget.h boardwidget.cpp
+            boardsellect.h boardsellect.cpp
+            mainsellectmode.h mainsellectmode.cpp
+
+
 
 
 
