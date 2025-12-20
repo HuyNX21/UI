@@ -14,3 +14,43 @@ QMainWindow
                    ├── QPushButton
                    ├── QPushButton
                    └── stretch
+
++------------------------------------------------------+
+|                  CentralWidget (QWidget)             |
+|  Layout: QHBoxLayout                                 |
+|  Margins: 8 / Spacing: 8                              |
+|                                                      |
+|  +---------------------------+  +------------------+ |
+|  |                           |  |                  | |
+|  |       SquareBoard         |  |   SidePanel      | |
+|  |       (QWidget)           |  |   (QWidget)      | |
+|  |                           |  |                  | |
+|  |  Layout: QGridLayout      |  | Layout: QVBox    | |
+|  |  NxN buttons              |  |                  | |
+|  |                           |  |  [Stretch]       | |
+|  |  - Expanding              |  |                  | |
+|  |  - Always Square          |  |  [8 x 8 Button]  | |
+|  |                           |  |                  | |
+|  |                           |  |  [16 x 16 Button]| |
+|  |                           |  |                  | |
+|  |                           |  |  [32 x 32 Button]| |
+|  |                           |  |                  | |
+|  +---------------------------+  +------------------+ |
+|                                                      |
++------------------------------------------------------+
+
+CentralWidget
+└── QHBoxLayout (mainLayout)
+    ├── SquareBoard (stretch = 1)
+    │   └── QGridLayout
+    │       ├── Cell (0,0)
+    │       ├── Cell (0,1)
+    │       ├── ...
+    │       └── Cell (N-1,N-1)
+    │
+    └── SidePanel (fixed width = 200)
+        └── QVBoxLayout (sideLayout)
+            ├── Stretch
+            ├── QPushButton "8 x 8"
+            ├── QPushButton "16 x 16"
+            └── QPushButton "32 x 32"

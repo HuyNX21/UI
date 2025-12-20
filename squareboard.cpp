@@ -1,26 +1,52 @@
-#include "squareboard.h"
-
-#include <QGridLayout>
-#include <QPushButton>
+#include "SquareBoard.h"
 #include <QResizeEvent>
 #include <QtMath>
+
+static constexpr int MinButtonSize = 40;
 
 SquareBoard::SquareBoard(QWidget* parent)
     : QWidget(parent)
 {
-    auto* grid = new QGridLayout(this);
-    grid->setSpacing(0);
-    grid->setContentsMargins(0, 0, 0, 0);
+    m_grid = new QGridLayout(this);
+    m_grid->setSpacing(0);
+    m_grid->setContentsMargins(0, 0, 0, 0);
 
-    for (int i = 0; i < 4; ++i)
+    setBoardSize(8); // mode mặc định
+}
+
+void SquareBoard::setBoardSize(int size)
+{
+    if (size <= 0 || size == m_boardSize)
+        return;
+
+    m_boardSize = size;
+    rebuildBoard();
+
+    const int minBoardSize = MinButtonSize * m_boardSize;
+    setMinimumSize(minBoardSize, minBoardSize);
+
+    updateGeometry();
+}
+
+void SquareBoard::rebuildBoard()
+{
+    // Clear old widgets
+    while (QLayoutItem* item = m_grid->takeAt(0))
     {
-        auto* btn = new QPushButton(QString::number(i + 1), this);
-        btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        grid->addWidget(btn, i / 2, i % 2);
+        delete item->widget();
+        delete item;
     }
 
-    const int minBoardSize = MinButtonSize * 2;
-    setMinimumSize(minBoardSize, minBoardSize);
+    for (int r = 0; r < m_boardSize; ++r)
+    {
+        for (int c = 0; c < m_boardSize; ++c)
+        {
+            auto* btn = new QPushButton(this);
+            btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            btn->setText(QString("%1,%2").arg(r).arg(c));
+            m_grid->addWidget(btn, r, c);
+        }
+    }
 }
 
 void SquareBoard::resizeEvent(QResizeEvent* event)
@@ -28,7 +54,7 @@ void SquareBoard::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
 
     int side = qMin(width(), height());
-    side = qMax(side, MinButtonSize * 2);
+    side = qMax(side, MinButtonSize * m_boardSize);
 
     resize(side, side);
 }

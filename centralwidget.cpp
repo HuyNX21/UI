@@ -1,5 +1,5 @@
-#include "centralwidget.h"
-#include "squareboard.h"
+#include "CentralWidget.h"
+#include "SquareBoard.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -15,8 +15,8 @@ CentralWidget::CentralWidget(QWidget* parent)
     mainLayout->setSpacing(8);
 
     // ===== Left: Board =====
-    auto* board = new SquareBoard(this);
-    board->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_board = new SquareBoard(this);
+    m_board->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // ===== Right: Side panel =====
     auto* sidePanel = new QWidget(this);
@@ -26,21 +26,30 @@ CentralWidget::CentralWidget(QWidget* parent)
     sideLayout->setContentsMargins(0, 0, 0, 0);
     sideLayout->setSpacing(8);
 
-    // 🔴 QUAN TRỌNG: đẩy khoảng trống lên TRÊN
     sideLayout->addStretch();
 
-    QPushButton* b1 = new QPushButton("Button 1", sidePanel);
-    QPushButton* b2 = new QPushButton("Button 2", sidePanel);
-    QPushButton* b3 = new QPushButton("Button 3", sidePanel);
+    QPushButton* b8  = new QPushButton("8 x 8", sidePanel);
+    QPushButton* b16 = new QPushButton("16 x 16", sidePanel);
+    QPushButton* b32 = new QPushButton("32 x 32", sidePanel);
 
-    for (auto* b : {b1, b2, b3})
+    for (auto* b : {b8, b16, b32})
     {
         b->setMinimumSize(sizeButton, sizeButton);
         b->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sideLayout->addWidget(b);
     }
 
+    connect(b8,  &QPushButton::clicked, this, [this]() {
+        m_board->setBoardSize(8);
+    });
+    connect(b16, &QPushButton::clicked, this, [this]() {
+        m_board->setBoardSize(16);
+    });
+    connect(b32, &QPushButton::clicked, this, [this]() {
+        m_board->setBoardSize(32);
+    });
+
     // ===== Assemble =====
-    mainLayout->addWidget(board, 1);
+    mainLayout->addWidget(m_board, 1);
     mainLayout->addWidget(sidePanel);
 }
